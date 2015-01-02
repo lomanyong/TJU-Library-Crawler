@@ -2,6 +2,7 @@ async = require('async')
 request = require('request')
 cheerio = require('cheerio')
 formatter = require('dateformat')
+db = require('./storage')
 
 BASEURL = "http://ilink.lib.tju.edu.cn"
 
@@ -74,15 +75,11 @@ module.exports.analyzeList = (url, callback) ->
   并发抓取详情界面
 ###
 module.exports.fetchData = (res, callback) ->
-  books = []
-  parallelFechBookDetail(res, (arr) ->
-    for book in arr
-      books.push book
-    callback(books, res)
+  parallelFechBookDetail(res, () ->
+    callback(res)
   )
 
 module.exports.fetchNextPage = (res, callback) ->
-  books = []
   async.eachSeries(
     [2..res.allpage]
     (param, cb) ->
@@ -103,9 +100,7 @@ module.exports.fetchNextPage = (res, callback) ->
         (err, res, body) ->
           console.log 'loading...: JUMP^' + param
           analyzePageBody(body, (result) ->
-            parallelFechBookDetail(result, (arr) ->
-              for book in arr
-                books.push book
+            parallelFechBookDetail(result, () ->
               cb(null)
             )
           )
@@ -128,7 +123,10 @@ parallelFechBookDetail = (res, callback) ->
       )
     (err) ->
       if (!err)
-        callback(books)
+        db.storeBooks(books, (err) ->
+          if (!err)
+            callback()
+        )
   )
 
 analyzePageBody = (body, callback) ->
@@ -199,11 +197,7 @@ fetchDetail = (url, param, start, end, callback) ->
         else if tds.length == 4
           if $(tds[1]).text().trim() != "复本号"
             if $(tds[0]).text().trim() != ""
-              info.locid.push(
-                {
-                  id : $(tds[0]).text().trim()
-                }
-              )
+              info.locid.push($(tds[0]).text().trim())
             info.items.push(
               {
                 copynum : $(tds[1]).text().trim()

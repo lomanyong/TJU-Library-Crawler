@@ -7,7 +7,8 @@ TJU Library Crawler
 
 项目基于 NodeJS，也是我自己第一次用 NodeJS 做的实际的小项目了。
 
-存储模块暂时还没有完成，准备使用 mongodb 。
+## UPDATE
+- 【2014.01.02】存储模块完成
 
 ## Start
 如果没有安装 coffeescript，需要先 `sudo npm install -g coffee` 
@@ -16,8 +17,9 @@ TJU Library Crawler
     coffee app.coffee
 
 ## TODO
-- 存储模块【mongodb】
 - 所有分类的抓取，目前只是做了单个分类
+- 异常捕获
+- 爬取流程优化
 
 ## About
 - Author: Huang Yong (lomanyong#gmail.com)

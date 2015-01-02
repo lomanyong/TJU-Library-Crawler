@@ -43,14 +43,8 @@ async.waterfall([
 
   (res, callback) ->
     console.log 'fetch first page detail begin...'
-    arr = crawler.fetchData(res, (arr, res) ->
-      if (arr == [])
-        callback('error! Books list is empty.')
-      else
-        console.log "Books Length: " + arr.length
-        for book in arr
-          books.push book
-        callback(null, res)
+    crawler.fetchData(res, (res) ->
+      callback(null, res)
     )
 
   (result, callback) ->
@@ -58,14 +52,8 @@ async.waterfall([
     if (result.is_last_page)
       callback(null)
     else
-      crawler.fetchNextPage(result, (arr) ->
-        if (arr == [])
-          callback('error! Books list is empty.')
-        else
-          console.log "Books Length: " + arr.length
-          for book in arr
-            books.push book
-          callback(null)
+      crawler.fetchNextPage(result, () ->
+        callback(null)
       )
 
 ], (err) ->
