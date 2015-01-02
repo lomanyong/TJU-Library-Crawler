@@ -1,10 +1,5 @@
 # 图书馆书目信息爬虫
-BASEURL = "http://ilink.lib.tju.edu.cn"
-
 async = require('async')
-request = require('request')
-cheerio = require('cheerio')
-formatter = require('dateformat')
 crawler = require('./crawler')
 
 books = []

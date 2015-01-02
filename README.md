@@ -17,6 +17,7 @@ TJU Library Crawler
 
 ## TODO
 - 存储模块【mongodb】
+- 所有分类的抓取，目前只是做了单个分类
 
 ## About
 - Author: Huang Yong (lomanyong#gmail.com)

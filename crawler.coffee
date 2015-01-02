@@ -80,19 +80,6 @@ module.exports.fetchData = (res, callback) ->
       books.push book
     callback(books, res)
   )
-  ###async.each(
-    [res.first_hit..res.last_hit]
-    (param, cb) ->
-      book = fetchDetail(res.url, param, res.first_hit, res.last_hit, (book) ->
-        console.log "VIEW^" + param
-        console.log book
-        books.push book
-        cb(null)
-      )
-    (err) ->
-      if (!err)
-        callback(books, res)
-  )###
 
 module.exports.fetchNextPage = (res, callback) ->
   books = []
