@@ -8,6 +8,7 @@ TJU Library Crawler
 项目基于 NodeJS，也是我自己第一次用 NodeJS 做的实际的小项目了。
 
 ## UPDATE
+- 【2014.01.03】存储模块优化
 - 【2014.01.02】存储模块完成
 
 ## Start

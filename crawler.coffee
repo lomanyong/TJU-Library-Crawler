@@ -5,6 +5,7 @@ formatter = require('dateformat')
 db = require('./storage')
 
 BASEURL = "http://ilink.lib.tju.edu.cn"
+entrances = []
 
 ###
   访问图书馆首页，获取基本的书目参考咨询的URL
@@ -48,10 +49,9 @@ module.exports.getTypeUrls = (url, callback) ->
       $ = cheerio.load body
       url = $("ul.gatelist_table > li > a")[0].attribs.href # 分类 暂时为军事
       #console.log "军事类:" + url + " loading..."
-#      urls = []
-#      $("ul.gatelist_table > li > a").each ->
-#        urls.push $(@)[0].attribs.href.trim()
-#      console.log urls
+      $("ul.gatelist_table > li > a").each ->
+        entrances.push $(@)[0].attribs.href.trim()
+      console.log entrances
 
       callback(url)
   )
@@ -116,7 +116,7 @@ parallelFechBookDetail = (res, callback) ->
     [res.first_hit..res.last_hit]
     (param, cb) ->
       book = fetchDetail(res.url, param, res.first_hit, res.last_hit, (book) ->
-        console.log "VIEW^" + param
+        #console.log "VIEW^" + param
         #console.log book
         books.push book
         cb(null)
@@ -138,7 +138,7 @@ analyzePageBody = (body, callback) ->
   page = $("div.searchsummary_pagination > strong").html().trim()
   allnum = $("div.searchsummary > em").html().trim()
   allpage = parseInt(allnum / 20) + 1
-  console.log "详情:" + url + " loading..."
+  #console.log "详情:" + url + " loading..."
 
   result =
     url : url

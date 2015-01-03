@@ -9,11 +9,11 @@ BookSchema = new mongoose.Schema({
   isbn : String
   status : String
   library : String
-  updated_at : Date
+  updated_at : String
   locid : [String]
   items : [{
     copynum : String
-    type : String
+    leixing : String
     location : String
   }]
   info : [String]
@@ -22,7 +22,7 @@ BookSchema = new mongoose.Schema({
 BookModel = mongoose.model('Book', BookSchema)
 
 module.exports.storeBooks = (books, callback) ->
-  console.log 'storage begin...'
+  console.log "storage begin...Books' length #{books.length}"
   async.each(
     books,
     (book, cb) ->
@@ -33,6 +33,15 @@ module.exports.storeBooks = (books, callback) ->
           if (!item)
             BookModel.create(book, (err) ->
               if (err)
+                console.log "create error! : " + book.title
+                cb err
+              else
+                cb null
+            )
+          else
+            BookModel.update({title : item.title}, book, (err) ->
+              if (err)
+                console.log "update error! : " + book
                 cb err
               else
                 cb null
@@ -40,6 +49,10 @@ module.exports.storeBooks = (books, callback) ->
       )
     (err) ->
       if (!err)
-        console.log 'storage end...'
-        callback null
+        BookModel.count({title : new RegExp(/^.*$/)}, (err, count) ->
+          if (!err)
+            console.log "all books count #{count}"
+          console.log 'storage end...'
+          callback null
+        )
   )

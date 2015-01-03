@@ -2,8 +2,6 @@
 async = require('async')
 crawler = require('./crawler')
 
-books = []
-
 async.waterfall([
   (callback) ->
     console.log 'fetch first url begin...'
@@ -58,7 +56,7 @@ async.waterfall([
 
 ], (err) ->
   if (!err)
-    console.log "All Completed. All books' length is #{books.length}"
+    console.log "All Completed."
   else
     console.log err
 )
